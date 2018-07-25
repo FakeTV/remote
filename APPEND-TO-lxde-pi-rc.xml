@@ -1,0 +1,216 @@
+<!-- ADD BELOW SECTION TO THE OPENBOX XML IN BETWEEN <keyboard></keyboard> TAGS
+DEFAULT LOCATION FOR XML ON RASPBIAN IS ~./.config/openbox/lxde-pi-rc.xml -->
+
+
+    <!-- Remote Binds -->
+    <keybind key="XF86AudioPrev">
+	<keybind key="XF68AudioNext">
+		<keybind key="XF86AudioPrev">
+			<keybind key="XF86AudioNext">
+				<action name="Execute">
+					<command>sudo /home/pi/remote/LRLR-reboot.sh</command>
+				</action>
+			</keybind>
+		</keybind>
+	</keybind>
+    </keybind>
+    <keybind key="XF86AudioRewind">
+	<keybind key="XF68AudioForward">
+		<keybind key="XF86AudioRewind">
+			<keybind key="XF86AudioForward">
+				<action name="Execute">
+					<command>sudo /home/pi/remote/LRLR-shutdown.sh</command>
+				</action>
+			</keybind>
+		</keybind>
+	</keybind>
+    </keybind>
+    <keybind key="XF86PowerOff">
+      <action name="Execute">
+        <command>sudo /home/pi/remote/XF86PowerOff.sh</command>
+      </action>
+    </keybind>
+    <keybind key="F3">
+      <action name="Execute">
+        <command>sudo /home/pi/remote/F3.sh</command>
+      </action>
+    </keybind>
+    <keybind key="Menu">
+      <action name="Execute">
+        <command>/home/pi/remote/Menu.sh</command>
+      </action>
+    </keybind>
+    <keybind key="XF86HomePage">
+      <action name="Execute">
+        <command>/home/pi/remote/XF86HomePage.sh</command>
+      </action>
+    </keybind>
+    <keybind key="Up">
+      <action name="Execute">
+        <command>/home/pi/remote/Up.sh</command>
+      </action>
+    </keybind>
+    <keybind key="Down">
+      <action name="Execute">
+        <command>/home/pi/remote/Down.sh</command>
+      </action>
+    </keybind>
+    <keybind key="Left">
+      <action name="Execute">
+        <command>/home/pi/remote/Left.sh</command>
+      </action>
+    </keybind>
+    <keybind key="Right">
+      <action name="Execute">
+        <command>/home/pi/remote/Right.sh</command>
+      </action>
+    </keybind>
+    <keybind key="Return">
+      <action name="Execute">
+        <command>/home/pi/remote/Return.sh</command>
+      </action>
+    </keybind>
+    <keybind key="XF86AudioRaiseVolume">
+      <action name="Execute">
+        <command>/home/pi/remote/XF86AudioRaiseVolume.sh</command>
+      </action>
+    </keybind>
+    <keybind key="XF86AudioLowerVolume">
+      <action name="Execute">
+        <command>/home/pi/remote/XF86AudioLowerVolume.sh</command>
+      </action>
+    </keybind>
+    <keybind key="XF86AudioMute">
+      <action name="Execute">
+        <command>/home/pi/remote/XF86AudioMute.sh</command>
+      </action>
+    </keybind>
+    <keybind key="Prior">
+      <action name="Execute">
+        <command>sudo /home/pi/remote/Prior.sh</command>
+      </action>
+    </keybind>
+    <keybind key="Next">
+      <action name="Execute">
+        <command>sudo /home/pi/remote/Next.sh</command>
+      </action>
+    </keybind>
+    <keybind key="XF86Tools">
+      <action name="Execute">
+        <command>/home/pi/remote/XF86Tools.sh</command>
+      </action>
+    </keybind>
+    <keybind key="XF86Mail">
+      <action name="Execute">
+        <command>/home/pi/remote/XF86Mail.sh</command>
+      </action>
+    </keybind>
+    <keybind key="F2">
+      <action name="Execute">
+        <command>/home/pi/remote/F2.sh</command>
+      </action>
+    </keybind>
+    <keybind key="F4">
+      <action name="Execute">
+        <command>/home/pi/remote/F4.sh</command>
+      </action>
+    </keybind>
+    <keybind key="F5">
+      <action name="Execute">
+        <command>/home/pi/remote/F5.sh</command>
+      </action>
+    </keybind>
+    <keybind key="F6">
+      <action name="Execute">
+        <command>/home/pi/remote/F6.sh</command>
+      </action>
+    </keybind>
+    <keybind key="F7">
+      <action name="Execute">
+        <command>/home/pi/remote/F7.sh</command>
+      </action>
+    </keybind>
+    <keybind key="0">
+          <keybind key="1">
+            <action name="Execute">
+              <command>sudo /home/pi/remote/01.sh</command>
+            </action>
+            <action name="BreakChroot"/>
+          </keybind>
+          <keybind key="2">
+            <action name="Execute">
+              <command>sudo /home/pi/remote/02.sh</command>
+            </action>
+            <action name="BreakChroot"/>
+          </keybind>
+          <keybind key="3">
+            <action name="Execute">
+              <command>sudo /home/pi/remote/03.sh</command>
+            </action>
+            <action name="BreakChroot"/>
+          </keybind>
+          <keybind key="4">
+            <action name="Execute">
+              <command>sudo /home/pi/remote/04.sh</command>
+            </action>
+            <action name="BreakChroot"/>
+          </keybind>
+          <keybind key="5">
+            <action name="Execute">
+              <command>sudo /home/pi/remote/05.sh</command>
+            </action>
+            <action name="BreakChroot"/>
+          </keybind>
+          <keybind key="6">
+            <action name="Execute">
+              <command>sudo /home/pi/remote/06.sh</command>
+            </action>
+            <action name="BreakChroot"/>
+          </keybind>
+          <keybind key="7">
+            <action name="Execute">
+              <command>sudo /home/pi/remote/07.sh</command>
+            </action>
+            <action name="BreakChroot"/>
+          </keybind>
+          <keybind key="8">
+            <action name="Execute">
+              <command>sudo /home/pi/remote/08.sh</command>
+            </action>
+            <action name="BreakChroot"/>
+          </keybind>
+          <keybind key="9">
+            <action name="Execute">
+              <command>sudo /home/pi/remote/09.sh</command>
+            </action>
+            <action name="BreakChroot"/>
+          </keybind>
+    </keybind>
+    <keybind key="1">
+      <action name="Execute">
+        <command>/home/pi/remote/1.sh</command>
+      </action>
+	  <keybind key="0">
+	    <action name="Execute">
+	      <command>sudo /home/pi/remote/10.sh</command>
+	    </action>
+	  </keybind>
+          <keybind key="1">
+            <action name="Execute">
+              <command>sudo /home/pi/remote/11.sh</command>
+            </action>
+            <action name="BreakChroot"/>
+          </keybind>
+          <keybind key="2">
+            <action name="Execute">
+              <command>sudo /home/pi/remote/12.sh</command>
+            </action>
+            <action name="BreakChroot"/>
+          </keybind>
+          <keybind key="3">
+            <action name="Execute">
+              <command>sudo /home/pi/remote/13.sh</command>
+            </action>
+            <action name="BreakChroot"/>
+          </keybind>
+    </keybind>
