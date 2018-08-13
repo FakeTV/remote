@@ -1,7 +1,3 @@
-<!-- ADD BELOW SECTION TO THE OPENBOX XML IN BETWEEN <keyboard></keyboard> TAGS
-DEFAULT LOCATION FOR XML ON RASPBIAN IS ~./.config/openbox/lxde-pi-rc.xml -->
-
-
     <!-- Remote Binds -->
     <keybind key="XF86AudioPrev">
 	<keybind key="XF68AudioNext">
