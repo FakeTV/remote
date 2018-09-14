@@ -1,0 +1,5 @@
+    <keybind key="\"$key\"">
+      <action name=\"Execute\">
+        <command>"$script"</command>
+      </action>
+    </keybind>

@@ -1,0 +1,52 @@
+  <keybind key="\"$leadkey\"">	
+    <keybind key="\"$key1\"">
+      <action name=\"Execute\">
+        <command>sudo "\"$PWD\/$script\""</command>
+      </action>
+    </keybind>
+    <keybind key="\"$key2\"">
+      <action name=\"Execute\">
+        <command>sudo "\"$PWD\/$script\""</command>
+      </action>
+    </keybind>
+    <keybind key="\"$key3\"">
+      <action name=\"Execute\">
+        <command>sudo "\"$PWD\/$script\""</command>
+      </action>
+    </keybind>
+    <keybind key="\"$key4\"">
+      <action name=\"Execute\">
+        <command>sudo "\"$PWD\/$script\""</command>
+      </action>
+    </keybind>
+    <keybind key="\"$key5\"">
+      <action name=\"Execute\">
+        <command>sudo "\"$PWD\/$script\""</command>
+      </action>
+    </keybind>
+    <keybind key="\"$key6\"">
+      <action name=\"Execute\">
+        <command>sudo "\"$PWD\/$script\""</command>
+      </action>
+    </keybind>
+    <keybind key="\"$key7\"">
+      <action name=\"Execute\">
+        <command>sudo "\"$PWD\/$script\""</command>
+      </action>
+    </keybind>
+    <keybind key="\"$key8\"">
+      <action name=\"Execute\">
+        <command>sudo "\"$PWD\/$script\""</command>
+      </action>
+    </keybind>
+    <keybind key="\"$key9\"">
+      <action name=\"Execute\">
+        <command>sudo "\"$PWD\/$script\""</command>
+      </action>
+    </keybind>
+    <keybind key="\"$key10\"">
+      <action name=\"Execute\">
+        <command>sudo "\"$PWD\/$script\""</command>
+      </action>
+    </keybind>
+  </keybind>
