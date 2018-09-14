@@ -1,8 +1,7 @@
 #!/bin/bash
-cd /home/pi/remote/
+cd "$homedir""remote/"
 source remote-functions.sh
 
-button_press
-shutdown
+"$script_action"
 
 exit 0

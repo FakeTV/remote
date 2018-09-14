@@ -1,9 +1,11 @@
 #!/bin/bash
-cd /home/pi/remote/
+cd "$homedir""remote/"
 source remote-functions.sh
 
+channel_number="$channel_number"
+
 button_press
-rasplex_showsubs
+channel
 button_depress
 
 exit 0

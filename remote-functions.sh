@@ -1,46 +1,37 @@
 #!/bin/bash
-
+source remote_token.sh
 function_id=$1
 channel_number=$2
-client_ip="PLEX_CLIENT_IP_ADDRESS"
-server_ip="PLEX_SERVER_IP_ADDRESS"
-netcontroller_ip="NETWORK_CONTROLLER_IP_ADDRESS"
-client_user="PLEX_CLIENT_USERNAME"
-server_user="PLEX_SERVER_USERNAME"
-netcontroller_user="NETWORK_CONTROLLER_USERNAME"
-rsa="/home/pi/.ssh/id_rsa" #location of rsa token
-ps="/home/pi/channels/" #location of Pseudo Channel
 
-button_press () {
-	aplay -q /home/pi/sounds/button-down.wav &
+
+button_press_sound () {
+	aplay -q "$button_down" &
 }
 
-button_depress () {
-	aplay -q /home/pi/sounds/button-up.wav &
+button_depress_sound () {
+	aplay -q "$button_up" &
 }
 
-reboot () {
-	cd /home/pi
-	chromium-browser localhost/standby.jpg
-	aplay -q /home/pi/sounds/runaway.wav &
-	cd "$ps"
-	sudo ./stop-all-channels.sh
-	ssh -i "$rsa" "$server_user"@"$server_ip" sudo reboot now
-	ssh -i "$rsa" "$netcontroller_user"@"$netcontroller_ip" sudo reboot now
-	ssh -i "$rsa" "$client_user"@"$client_ip" reboot now
+reboot_all () {
+	stop_all_channels
+	ssh -i "$rsa" "$server_user""@""$server_ip" sudo reboot now
+	ssh -i "$rsa" "$client_user""@""$client_ip" reboot now
+	if [[ "$is_ps_remote_device" == @("Y"|"y"|"Yes"|"yes"|"YES") ]]
+		then
+			ssh -i "$rsa" "$controller_user""@""$controller_ip" -t "sudo reboot now"
+	fi
 	sudo reboot now
-	while [ true ]; do aplay /home/pi/sounds/button-down.wav; done;
+	while [ true ]; do button_press_sound; done;
 }
 
-shutdown () {
-	cd /home/pi
-	chromium-browser localhost/standby.jpg
-	aplay -q /home/pi/sounds/shutdown.wav &
-	cd "$ps"
-	sudo ./stop-all-channels.sh
+shutdown_all () {
+	stop_all_channels
 	ssh -i "$rsa" "$server_user"@"$server_ip" sudo shutdown now
-	ssh -i "$rsa" "$netcontroller_user"@"$netcontroller_ip" sudo shutdown now
 	ssh -i "$rsa" "$client_user"@"$client_ip" shutdown now
+	if [[ "$is_ps_remote_device" == @("Y"|"y"|"Yes"|"yes"|"YES") ]]
+		then
+			ssh -i "$rsa" "$controller_user"@"$controller_ip" -t "sudo shutdown now"
+	fi
 }
 
 reset_status_screen () {
@@ -48,20 +39,31 @@ reset_status_screen () {
 }
 
 channel_up () {
-	cd "$ps" && sudo ./channelup.sh
+if [[ "$is_ps_remote_device" == @("Y"|"y"|"Yes"|"yes"|"YES") ]]
+	then
+		ssh -i "$rsa" "$controller_user"@"$controller_ip" -t "cd $ps && sudo nohup ./channelup.sh"
+	else
+		"$ps" && sudo ./channelup.sh
+fi
 }
 
 channel_down () {
-	cd "$ps" && sudo ./channeldown.sh
+if [[ "$is_ps_remote_device" == @("Y"|"y"|"Yes"|"yes"|"YES") ]]
+	then
+		ssh -i "$rsa" "$controller_user"@"$controller_ip" -t "cd $ps && sudo nohup ./channeldown.sh"
+	else
+		cd "$ps" && sudo ./channeldown.sh
+fi
 }
 
 channel () {
         ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\($channel_number,Starting\ Channel\ $channel_number,20000\)"
+if [[ "$is_ps_remote_device" == @("Y"|"y"|"Yes"|"yes"|"YES") ]]
+	then
+		ssh -i "$rsa" "$controller_user"@"$controller_ip" -t "cd $ps && sudo nohup ./manual.sh $channel_number"
+	else
 	cd "$ps" && sudo ./manual.sh "$channel_number"
-}
-
-lead_number () {
-	ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\($channel_number\ -,Waiting\ for\ keypress,3000\)"
+fi
 }
 
 rasplex_back () {
@@ -92,11 +94,11 @@ rasplex_select () {
         ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Select"
 }
 
-rasplex_volup () {
+rasplex_volumeup () {
         ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "VolumeUp"
 }
 
-rasplex_voldown () {
+rasplex_volumedown () {
         ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "VolumeDown"
 }
 
@@ -104,11 +106,11 @@ rasplex_mute () {
         ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Mute"
 }
 
-rasplex_info () {
+rasplex_show_info () {
         ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Info"
 }
 
-rasplex_codec () {
+rasplex_detail_info () {
         ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "CodecInfo"
 }
 
@@ -125,14 +127,19 @@ rasplex_audio_language () {
         ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "AudioNextLanguage"
 }
 
-rasplex_nextsub () {
+rasplex_next_subtitle () {
         ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "NextSubtitle"
 }
 
-rasplex_showsubs () {
+rasplex_showsubtitles () {
         ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "ShowSubtitles"
 }
 
-stopall () {
+stop_all_channels () {
+if [[ "$is_ps_remote_device" == @("Y"|"y"|"Yes"|"yes"|"YES") ]]
+	then
+		ssh -i "$rsa" "$controller_user"@"$controller_ip" -t "cd $ps && sudo nohup ./stop-all-channels.sh"
+	else
 	cd "$ps" && sudo ./stop-all-channels.sh
+fi
 }
