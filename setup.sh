@@ -56,7 +56,7 @@ if [[ "$is_ps_remote_device" == @("Y"|"y"|"Yes"|"yes"|"YES") ]]
 	read -p 'Pseudo Channel Device IP: ' controller_ip
 	echo "Enter the SSH LOGIN USERNAME for the PSEUDO CHANNEL device"
 	read -p 'Pseudo Channel Device SSH Login: ' controller_user
-	echo "Enter the PSEUDO CHANNEL DIRECTORY PATH on the PSEUDO CHANNEL device (example: /home/pi/chanels_Clientname)"
+	echo "Enter the PSEUDO CHANNEL DIRECTORY PATH on the PSEUDO CHANNEL device (example: /home/pi/channels_Clientname)"
 	read -p 'Pseudo Channel Directory Path: ' ps
 	echo "PSEUDO CHANNEL is in $ps on $controller_ip"
 	sleep 1
@@ -318,7 +318,7 @@ sleep 1
 clear
 echo "++++++++++++++++++++REMOTE CONTROL KEYBIND SETUP++++++++++++++++++++"
 echo "COMPLETING KEYBIND SETUP AND PREPARING TO EXIT..."
-sudo chmod 777 "$homedir"remote
+sudo chmod 777 "$homedir"remote/*
 sudo service lightdm restart
 sleep 1
 exit 0
