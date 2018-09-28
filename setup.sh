@@ -168,7 +168,7 @@ then
 	echo "++++++++++++++++++++REMOTE CONTROL KEYBIND SETUP++++++++++++++++++++"
 	echo "SETTING UP KEYBINDS"
 	today=$(date)
-	echo "<!-- Start of Remote Control Binds set $today -->" | sudo tee temp.xml
+	echo "<!-- Start of Remote Control Binds set $today -->" | sudo tee temp.xml >/dev/null
 	echo "Play SOUND FILE with KEY PRESS and KEY RELEASE"
 	read -p "Y/N: " soundfile
 	while [[ "$soundfile" != @(Y|y|Yes|yes|YES|N|n|No|no|NO) ]]
@@ -237,24 +237,24 @@ then
 			clear
 			echo "++++++++++++++++++++REMOTE CONTROL KEYBIND SETUP++++++++++++++++++++"
 			echo "Setting up KEYBINDS for $number_of_channels CHANNELS"
-			eval "echo \"  <keybind key=$leadkey>\"" | sudo tee -a "$homedir""remote/temp.xml"
+			echo "  <keybind key=\"$leadkey\">" | sudo tee -a "$homedir""remote/temp.xml" >/dev/null
 			while [ $channel_position -le $number_of_channels ]
 				do
 					key=${channel_position: -1}
 					if [ "$key" -eq "0" ]
 						then
 							leadkey=$(($leadkey+1))
-							eval "echo \"  <\keybind>\"" | sudo tee -a "$homedir""remote/temp.xml"
-							eval "echo \"  <keybind key=$leadkey>\"" | sudo tee -a "$homedir""remote/temp.xml"
+							eval "echo \"  </keybind>\"" | sudo tee -a "$homedir""remote/temp.xml" >/dev/null
+							echo "  <keybind key=\"$leadkey\">" | sudo tee -a "$homedir""remote/temp.xml" >/dev/null
 					fi
 					channel_number="$leadkey""$key"
 					script="$homedir""remote/""$channel_number"".sh"
-					eval "echo \"$(cat $channel_template)\"" | sudo tee "$script"
-					eval "echo \"$(cat keybind-template.xml)\"" | sudo tee -a "$homedir""remote/temp.xml"
+					eval "echo \"$(cat $channel_template)\"" | sudo tee "$script" >/dev/null
+					eval "echo \"$(cat keybind-template.xml)\"" | sudo tee -a "$homedir""remote/temp.xml" >/dev/null
 					channel_position=$(($channel_position+1))
 					echo "CHANNEL $channel_number of $number_of_channels keybind set."
 				done
-			eval "echo \"  <\keybind>\"" | sudo tee -a "$homedir""remote/temp.xml"
+			eval "echo \"  </keybind>\"" | sudo tee -a "$homedir""remote/temp.xml" >/dev/null
 			echo "CHANNEL bindings complete. Starting KEY bindings..."
 	fi
 	sleep 1
@@ -284,13 +284,10 @@ then
 				key=$(xev -event keyboard | awk -W interactive -F'[ )]+' '/^KeyRelease/ { a[NR+2] } NR in a { printf "%s\n", $8;exit;}')
 				echo "BINDING $script_action to the $key BUTTON"
 				script="$homedir""remote/""$script_action"".sh"
-				eval "echo \"$(cat $sh_template)\"" | sudo tee "$script"
-				eval "echo \"$(cat keybind-template.xml)\"" | sudo tee -a "$homedir""remote/temp.xml"
+				eval "echo \"$(cat $sh_template)\"" | sudo tee "$script" >/dev/null
+				eval "echo \"$(cat keybind-template.xml)\"" | sudo tee -a "$homedir""remote/temp.xml" >/dev/null
 				break
 			done
-			sleep 1
-			clear
-			echo "++++++++++++++++++++REMOTE CONTROL KEYBIND SETUP++++++++++++++++++++"
 			echo "BIND another KEY?"
 			read -p 'Y/N: ' bind_remote
 			while [[ "$bind_remote" != @(Y|y|Yes|yes|YES|N|n|No|no|NO) ]]
@@ -299,8 +296,8 @@ then
 					read -p 'Y/N: ' bind_remote
 				done
 		done
-	echo "<!-- End of Remote Control Binds set $today -->" | sudo tee -a temp.xml
-	eval "echo \"$(cat remote_token_template.sh)\"" | sudo tee remote_token.sh
+	echo "<!-- End of Remote Control Binds set $today -->" | sudo tee -a temp.xml >/dev/null
+	eval "echo \"$(cat remote_token_template.sh)\"" | sudo tee remote_token.sh >/dev/null
 	sleep 1
 	clear
 	echo "++++++++++++++++++++REMOTE CONTROL KEYBIND SETUP++++++++++++++++++++"

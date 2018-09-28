@@ -13,6 +13,7 @@ button_depress_sound () {
 }
 
 reboot_all () {
+	ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\(REBOOTING\ ALL\ DEVICES,Please\ Stand\ By,20000\)"
 	stop_all_channels
 	ssh -i "$rsa" "$server_user""@""$server_ip" sudo reboot now
 	ssh -i "$rsa" "$client_user""@""$client_ip" reboot now
@@ -25,6 +26,7 @@ reboot_all () {
 }
 
 shutdown_all () {
+	ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\(SHUT\ DOWN,Please\ Stand\ By,20000\)"
 	stop_all_channels
 	ssh -i "$rsa" "$server_user"@"$server_ip" sudo shutdown now
 	ssh -i "$rsa" "$client_user"@"$client_ip" shutdown now
@@ -45,6 +47,7 @@ if [[ "$is_ps_remote_device" == @("Y"|"y"|"Yes"|"yes"|"YES") ]]
 	else
 		"$ps" && sudo ./channelup.sh
 fi
+ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\(CHANNEL\ UP,Executing...,20000\)"
 }
 
 channel_down () {
@@ -54,6 +57,7 @@ if [[ "$is_ps_remote_device" == @("Y"|"y"|"Yes"|"yes"|"YES") ]]
 	else
 		cd "$ps" && sudo ./channeldown.sh
 fi
+ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\(CHANNEL\ DOWN,Executing...,20000\)"
 }
 
 channel () {
@@ -68,29 +72,36 @@ fi
 
 rasplex_back () {
 	ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Back"
+	ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\(Button\ Press,BACK,5000\)"
 }
 
 rasplex_fullscreen () {
+	ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\(Button\ Press,FULLSCREEN,5000\)"
 	ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "FullScreen"
 }
 
 rasplex_up () {
+	ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\(Button\ Press,UP,5000\)"
 	ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Up"
 }
 
 rasplex_down () {
+	ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\(Button\ Press,DOWN,5000\)"
         ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Down"
 }
 
 rasplex_left () {
+	ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\(Button\ Press,LEFT,5000\)"
         ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Left"
 }
 
 rasplex_right () {
+	ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\(Button\ Press,RIGHT,5000\)"
         ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Right"
 }
 
 rasplex_select () {
+	ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\(Button\ Press,SELECT,5000\)"
         ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Select"
 }
 
@@ -120,22 +131,27 @@ rasplex_screenshot () {
 }
 
 rasplex_close_dialogue () {
+	ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\(Button\ Press,CLOSE\ DIALOGUE,5000\)"
         ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Close"
 }
 
 rasplex_audio_language () {
         ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "AudioNextLanguage"
+	ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\(Button\ Press,Audio\ Language,5000\)"
 }
 
 rasplex_next_subtitle () {
         ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "NextSubtitle"
+	ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\(Button\ Press,SUBTITLE\ NEXT,5000\)"
 }
 
 rasplex_showsubtitles () {
         ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "ShowSubtitles"
+	ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\(Button\ Press,TOGGLE SUBTITLES,5000\)"
 }
 
 stop_all_channels () {
+ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\(STOPPING\ PSEUDO\ CHANNEL,Please\ Stand\ By...,5000\)"
 if [[ "$is_ps_remote_device" == @("Y"|"y"|"Yes"|"yes"|"YES") ]]
 	then
 		ssh -i "$rsa" "$controller_user"@"$controller_ip" -t "cd $ps && sudo nohup ./stop-all-channels.sh"
