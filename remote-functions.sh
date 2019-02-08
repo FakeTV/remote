@@ -13,7 +13,7 @@ button_depress_sound () {
 }
 
 reboot_all () {
-	ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\(REBOOTING\ ALL\ DEVICES,Please\ Stand\ By,20000\)"
+	curl -d '{"jsonrpc": "2.0", "method": "GUI.ShowNotification", "params": { "title": "REBOOTING ALL DEVICES", "message": "Please Stand By", "displaytime": 20000}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
 	stop_all_channels
 	ssh -i "$rsa" "$server_user""@""$server_ip" sudo reboot now
 	ssh -i "$rsa" "$client_user""@""$client_ip" reboot now
@@ -26,7 +26,7 @@ reboot_all () {
 }
 
 shutdown_all () {
-	ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\(SHUT\ DOWN,Please\ Stand\ By,20000\)"
+	curl -d '{"jsonrpc": "2.0", "method": "GUI.ShowNotification", "params": { "title": "SHUTTING DOWN", "message": "Please Stand By", "displaytime": 20000}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
 	stop_all_channels
 	ssh -i "$rsa" "$server_user"@"$server_ip" sudo shutdown now
 	ssh -i "$rsa" "$client_user"@"$client_ip" shutdown now
@@ -47,7 +47,7 @@ if [[ "$is_ps_remote_device" == @("Y"|"y"|"Yes"|"yes"|"YES") ]]
 	else
 		"$ps" && sudo ./channelup.sh
 fi
-ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\(CHANNEL\ UP,Executing...,20000\)"
+curl -d '{"jsonrpc": "2.0", "method": "GUI.ShowNotification", "params": { "title": "CHANNEL UP", "message": "Executing...", "displaytime": 20000}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
 }
 
 channel_down () {
@@ -57,11 +57,11 @@ if [[ "$is_ps_remote_device" == @("Y"|"y"|"Yes"|"yes"|"YES") ]]
 	else
 		cd "$ps" && sudo ./channeldown.sh
 fi
-ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\(CHANNEL\ DOWN,Executing...,20000\)"
+curl -d '{"jsonrpc": "2.0", "method": "GUI.ShowNotification", "params": { "title": "CHANNEL DOWN", "message": "Executing...", "displaytime": 20000}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
 }
 
 channel () {
-        ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\($channel_number,Starting\ Channel\ $channel_number,20000\)"
+        curl -d '{"jsonrpc": "2.0", "method": "GUI.ShowNotification", "params": { "title": "'"${channel_number}"'", "message": "Starting Channel '"$channel_number"'", "displaytime": 15000}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
 if [[ "$is_ps_remote_device" == @("Y"|"y"|"Yes"|"yes"|"YES") ]]
 	then
 		ssh -i "$rsa" "$controller_user"@"$controller_ip" -t "cd $ps && sudo nohup ./manual.sh $channel_number"
@@ -71,87 +71,87 @@ fi
 }
 
 rasplex_back () {
-	ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Back"
-	ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\(Button\ Press,BACK,5000\)"
+	curl -d '{"jsonrpc": "2.0", "method": "GUI.ShowNotification", "params": { "title": "Button Press", "message": "BACK", "displaytime": 5000}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
+	curl -d '{"jsonrpc": "2.0", "method": "Input.Back", "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
 }
 
 rasplex_fullscreen () {
-	ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\(Button\ Press,FULLSCREEN,5000\)"
-	ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "FullScreen"
+	curl -d '{"jsonrpc": "2.0", "method": "GUI.ShowNotification", "params": { "title": "Button Press", "message": "FULLSCREEN", "displaytime": 5000}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
+	curl -d '{"jsonrpc": "2.0", "method": "GUI.SetFullscreen", "params": { "fullscreen": "toggle"}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
 }
 
 rasplex_up () {
-	ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\(Button\ Press,UP,5000\)"
-	ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Up"
+	curl -d '{"jsonrpc": "2.0", "method": "GUI.ShowNotification", "params": { "title": "Button Press", "message": "UP", "displaytime": 5000}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
+	curl -d '{"jsonrpc": "2.0", "method": "Input.Up", "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
 }
 
 rasplex_down () {
-	ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\(Button\ Press,DOWN,5000\)"
-        ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Down"
+	curl -d '{"jsonrpc": "2.0", "method": "GUI.ShowNotification", "params": { "title": "Button Press", "message": "DOWN", "displaytime": 5000}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
+        curl -d '{"jsonrpc": "2.0", "method": "Input.Down", "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
 }
 
 rasplex_left () {
-	ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\(Button\ Press,LEFT,5000\)"
-        ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Left"
+	curl -d '{"jsonrpc": "2.0", "method": "GUI.ShowNotification", "params": { "title": "Button Press", "message": "LEFT", "displaytime": 5000}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
+        curl -d '{"jsonrpc": "2.0", "method": "Input.Left", "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
 }
 
 rasplex_right () {
-	ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\(Button\ Press,RIGHT,5000\)"
-        ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Right"
+	curl -d '{"jsonrpc": "2.0", "method": "GUI.ShowNotification", "params": { "title": "Button Press", "message": "RIGHT", "displaytime": 5000}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
+        curl -d '{"jsonrpc": "2.0", "method": "Input.Right", "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
 }
 
 rasplex_select () {
-	ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\(Button\ Press,SELECT,5000\)"
-        ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Select"
+	curl -d '{"jsonrpc": "2.0", "method": "GUI.ShowNotification", "params": { "title": "Button Press", "message": "SELECT", "displaytime": 5000}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
+        curl -d '{"jsonrpc": "2.0", "method": "Input.Select", "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
 }
 
 rasplex_volumeup () {
-        ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "VolumeUp"
+        curl -d '{"jsonrpc": "2.0", "method": "Application.SetVolume", "params": { "volume": "decrement"}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
 }
 
 rasplex_volumedown () {
-        ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "VolumeDown"
+        curl -d '{"jsonrpc": "2.0", "method": "Application.SetMute", "params": { "mute": "toggle"}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
 }
 
 rasplex_mute () {
-        ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Mute"
+        curl -d '{"jsonrpc": "2.0", "method": "Application.SetMute", "params": { "mute": "toggle"}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
 }
 
 rasplex_show_info () {
-        ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Info"
+        curl -d '{"jsonrpc": "2.0", "method": "Input.Info", "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
 }
 
 rasplex_detail_info () {
-        ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "CodecInfo"
+        curl -d '{"jsonrpc": "2.0", "method": "Input.ShowCodec", "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
 }
 
 rasplex_screenshot () {
-        ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Screenshot"
-        ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\(Saved\ Screenshot,\ ,1000\)"
+        curl -d '{"jsonrpc": "2.0", "method": "Input.ExecuteAction", "params": { "action": "screenshot"}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
+        curl -d '{"jsonrpc": "2.0", "method": "GUI.ShowNotification", "params": { "title": "Saved Screenshot", "message": " ", "displaytime": 1500}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
 }
 
 rasplex_close_dialogue () {
-	ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\(Button\ Press,CLOSE\ DIALOGUE,5000\)"
-        ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Close"
+	curl -d '{"jsonrpc": "2.0", "method": "GUI.ShowNotification", "params": { "title": "Button Press", "message": "CLOSE DIALOGUE", "displaytime": 5000}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
+	curl -d '{"jsonrpc": "2.0", "method": "Input.Home", "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
 }
 
 rasplex_audio_language () {
-        ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "AudioNextLanguage"
-	ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\(Button\ Press,Audio\ Language,5000\)"
+	curl -d '{"jsonrpc": "2.0", "method": "GUI.ShowNotification", "params": { "title": "Button Press", "message": "AUDIO LANGUAGE", "displaytime": 5000}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
+	curl -d '{"jsonrpc": "2.0", "method": "Player.SetAudioStream", "params": { "playerid": 1, "stream": "next"}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
 }
 
 rasplex_next_subtitle () {
-        ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "NextSubtitle"
-	ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\(Button\ Press,SUBTITLE\ NEXT,5000\)"
+	curl -d '{"jsonrpc": "2.0", "method": "GUI.ShowNotification", "params": { "title": "Button Press", "message": "SUBTITLE NEXT", "displaytime": 5000}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
+	curl -d '{"jsonrpc": "2.0", "method": "Input.ExecuteAction", "params": { "action": "cyclesubtitle"}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
 }
 
 rasplex_showsubtitles () {
-        ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "ShowSubtitles"
-	ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\(Button\ Press,TOGGLE SUBTITLES,5000\)"
+	curl -d '{"jsonrpc": "2.0", "method": "GUI.ShowNotification", "params": { "title": "Button Press", "message": "TOGGLE SUBTITLES", "displaytime": 5000}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
+	curl -d '{"jsonrpc": "2.0", "method": "Input.ExecuteAction", "params": { "action": "showsubtitle"}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
 }
 
 stop_all_channels () {
-ssh -i "$rsa" "$client_user"@"$client_ip" xbmc-send --host=127.0.0.1 -a "Notification\(STOPPING\ PSEUDO\ CHANNEL,Please\ Stand\ By...,5000\)"
+curl -d '{"jsonrpc": "2.0", "method": "GUI.ShowNotification", "params": { "title": "STOPPING PSEUDO CHANNEL", "message": "Please Stand By...", "displaytime": 5000}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
 if [[ "$is_ps_remote_device" == @("Y"|"y"|"Yes"|"yes"|"YES") ]]
 	then
 		ssh -i "$rsa" "$controller_user"@"$controller_ip" -t "cd $ps && sudo nohup ./stop-all-channels.sh"
