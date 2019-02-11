@@ -106,11 +106,11 @@ rasplex_select () {
 }
 
 rasplex_volumeup () {
-        curl -d '{"jsonrpc": "2.0", "method": "Application.SetVolume", "params": { "volume": "decrement"}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
+        curl -d '{"jsonrpc": "2.0", "method": "Application.SetVolume", "params": { "volume": "increment"}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
 }
 
 rasplex_volumedown () {
-        curl -d '{"jsonrpc": "2.0", "method": "Application.SetMute", "params": { "mute": "toggle"}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
+	curl -d '{"jsonrpc": "2.0", "method": "Application.SetVolume", "params": { "volume": "decrement"}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
 }
 
 rasplex_mute () {
