@@ -147,7 +147,7 @@ rasplex_next_subtitle () {
 
 rasplex_showsubtitles () {
 	curl -d '{"jsonrpc": "2.0", "method": "GUI.ShowNotification", "params": { "title": "Button Press", "message": "TOGGLE SUBTITLES", "displaytime": 5000}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
-	curl -d '{"jsonrpc": "2.0", "method": "Input.ExecuteAction", "params": { "action": "showsubtitle"}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
+	curl -d '{"jsonrpc": "2.0", "method": "Input.ExecuteAction", "params": { "action": "showsubtitles"}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
 }
 
 stop_all_channels () {
