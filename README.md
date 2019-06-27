@@ -1,7 +1,7 @@
 # Setup a USB Remote with PseudoChannel
 **Installation and setup of Remote Control Keybinds and PseudoChannel**
 
-**[Original Blog Post @medium.com]((https://medium.com/@Fake.TV/configuring-a-usb-remote-control-for-faketv-functions-73e4caf60c20))**
+**[Original Blog Post @medium.com]((https://medium.com/@Fake.TV/configuring-a-usb-remote-control-for-faketv-functions-73e4caf60c20)**
 
 ![alt text](https://miro.medium.com/max/1000/1*KGvIKhjzLm_Z9-9ZtOzjnA.png)
 
