@@ -16,13 +16,14 @@
 
 1) Clone this repository on your controller Pi along-side the pseudo-channels "~/channels" directory:
 
-`% git clone https://github.com/FakeTV/remote.git`
-`% cd remote`
+	`% git clone https://github.com/FakeTV/remote.git`
+
+	`% cd remote`
 
 2) Make the "setup.sh" script executable:
 
-`% sudo chmod +x setup.sh`
+	`% sudo chmod +x setup.sh`
 
-3) Run the script and follow the promts:
+3) Run the script and follow the prompts:
 
-`% ./setup.sh`
+	`% ./setup.sh`
