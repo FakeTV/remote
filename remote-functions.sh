@@ -43,9 +43,9 @@ reset_status_screen () {
 channel_up () {
 if [[ "$is_ps_remote_device" == @("Y"|"y"|"Yes"|"yes"|"YES") ]]
 	then
-		ssh -i "$rsa" "$controller_user"@"$controller_ip" -t "cd $ps && sudo nohup ./channelup.sh"
+		ssh -i "$rsa" "$controller_user"@"$controller_ip" -t "cd $ps && bash nohup ./channelup.sh"
 	else
-		"$ps" && sudo ./channelup.sh
+		"$ps" && bash ./channelup.sh
 fi
 curl -d '{"jsonrpc": "2.0", "method": "GUI.ShowNotification", "params": { "title": "CHANNEL UP", "message": "Executing...", "displaytime": 20000}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
 }
@@ -53,9 +53,9 @@ curl -d '{"jsonrpc": "2.0", "method": "GUI.ShowNotification", "params": { "title
 channel_down () {
 if [[ "$is_ps_remote_device" == @("Y"|"y"|"Yes"|"yes"|"YES") ]]
 	then
-		ssh -i "$rsa" "$controller_user"@"$controller_ip" -t "cd $ps && sudo nohup ./channeldown.sh"
+		ssh -i "$rsa" "$controller_user"@"$controller_ip" -t "cd $ps && bash nohup ./channeldown.sh"
 	else
-		cd "$ps" && sudo ./channeldown.sh
+		cd "$ps" && bash ./channeldown.sh
 fi
 curl -d '{"jsonrpc": "2.0", "method": "GUI.ShowNotification", "params": { "title": "CHANNEL DOWN", "message": "Executing...", "displaytime": 20000}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
 }
@@ -64,9 +64,9 @@ channel () {
         curl -d '{"jsonrpc": "2.0", "method": "GUI.ShowNotification", "params": { "title": "'"${channel_number}"'", "message": "Starting Channel '"$channel_number"'", "displaytime": 15000}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
 if [[ "$is_ps_remote_device" == @("Y"|"y"|"Yes"|"yes"|"YES") ]]
 	then
-		ssh -i "$rsa" "$controller_user"@"$controller_ip" -t "cd $ps && sudo nohup ./manual.sh $channel_number"
+		ssh -i "$rsa" "$controller_user"@"$controller_ip" -t "cd $ps && bash nohup ./manual.sh $channel_number"
 	else
-	cd "$ps" && sudo ./manual.sh "$channel_number"
+	cd "$ps" && bash ./manual.sh "$channel_number"
 fi
 }
 
@@ -154,8 +154,8 @@ stop_all_channels () {
 curl -d '{"jsonrpc": "2.0", "method": "GUI.ShowNotification", "params": { "title": "STOPPING PSEUDO CHANNEL", "message": "Please Stand By...", "displaytime": 5000}, "id": 1}' -H "Content-Type: application/json" -X POST http://$client_ip:3005/jsonrpc
 if [[ "$is_ps_remote_device" == @("Y"|"y"|"Yes"|"yes"|"YES") ]]
 	then
-		ssh -i "$rsa" "$controller_user"@"$controller_ip" -t "cd $ps && sudo nohup ./stop-all-channels.sh"
+		ssh -i "$rsa" "$controller_user"@"$controller_ip" -t "cd $ps && bash nohup ./stop-all-channels.sh"
 	else
-	cd "$ps" && sudo ./stop-all-channels.sh
+	cd "$ps" && bash ./stop-all-channels.sh
 fi
 }
