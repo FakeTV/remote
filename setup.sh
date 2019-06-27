@@ -98,7 +98,7 @@ echo "++++++++++++++++++++REMOTE CONTROL KEYBIND SETUP++++++++++++++++++++"
 echo "GETTING PLEX CLIENT INFORMATION"
 echo "SELECT the IP ADDRESS of the PLEX CLIENT from the LIST BELOW"
 echo "or ENTER one NOT LISTED"
-clienthosts=$(xmllint --xpath "//Server/@host" "http://$server_ip:$server_port/clients" | sed "s|host=||g" | sed "s|^ ||g" && echo -e " Other")
+clienthosts=$(xmllint --xpath "//Server/@host" "http://$server_ip:$server_port/clients/?X-Plex-Token=$server_token" | sed "s|host=||g" | sed "s|^ ||g" && echo -e " Other")
 eval set $clienthosts
 select client_ip in "$@"
 	do
