@@ -1,3 +1,4 @@
+
 #!/bin/bash
 clear
 echo "++++++++++++++++++++REMOTE CONTROL KEYBIND SETUP++++++++++++++++++++"
@@ -7,7 +8,7 @@ echo "DEPENDENCIES INSTALLED!"
 sleep 1
 clear
 echo "++++++++++++++++++++REMOTE CONTROL KEYBIND SETUP++++++++++++++++++++"
-sudo chmod 777 ./*
+#sudo chmod 777 ./*
 echo "Gathering PRELIMINARY INFORMATION"
 echo "SELECT the LOCAL USER ACCOUNT that THIS SCRIPT and PSEUDO CHANNEL are installed under."
 allusers=$(ls /home)
@@ -97,7 +98,7 @@ echo "++++++++++++++++++++REMOTE CONTROL KEYBIND SETUP++++++++++++++++++++"
 echo "GETTING PLEX CLIENT INFORMATION"
 echo "SELECT the IP ADDRESS of the PLEX CLIENT from the LIST BELOW"
 echo "or ENTER one NOT LISTED"
-clienthosts=$(xmllint --xpath "//Server/@host" "http://$server_ip:$server_port/clients" | sed "s|host=||g" | sed "s|^ ||g" && echo -e " Other")
+clienthosts=$(xmllint --xpath "//Server/@host" "http://$server_ip:$server_port/clients/?X-Plex-Token=$server_token" | sed "s|host=||g" | sed "s|^ ||g" && echo -e " Other")
 eval set $clienthosts
 select client_ip in "$@"
 	do
@@ -168,7 +169,7 @@ then
 	echo "++++++++++++++++++++REMOTE CONTROL KEYBIND SETUP++++++++++++++++++++"
 	echo "SETTING UP KEYBINDS"
 	today=$(date)
-	echo "<!-- Start of Remote Control Binds set $today -->" | sudo tee temp.xml >/dev/null
+	echo "<!-- Start of Remote Control Binds set $today -->" | tee temp.xml >/dev/null
 	echo "Play SOUND FILE with KEY PRESS and KEY RELEASE"
 	read -p "Y/N: " soundfile
 	while [[ "$soundfile" != @(Y|y|Yes|yes|YES|N|n|No|no|NO) ]]
@@ -237,24 +238,24 @@ then
 			clear
 			echo "++++++++++++++++++++REMOTE CONTROL KEYBIND SETUP++++++++++++++++++++"
 			echo "Setting up KEYBINDS for $number_of_channels CHANNELS"
-			echo "  <keybind key=\"$leadkey\">" | sudo tee -a "$homedir""remote/temp.xml" >/dev/null
+			echo "  <keybind key=\"$leadkey\">" | tee -a "$homedir""remote/temp.xml" >/dev/null
 			while [ $channel_position -le $number_of_channels ]
 				do
 					key=${channel_position: -1}
 					if [ "$key" -eq "0" ]
 						then
 							leadkey=$(($leadkey+1))
-							eval "echo \"  </keybind>\"" | sudo tee -a "$homedir""remote/temp.xml" >/dev/null
-							echo "  <keybind key=\"$leadkey\">" | sudo tee -a "$homedir""remote/temp.xml" >/dev/null
+							eval "echo \"  </keybind>\"" | tee -a "$homedir""remote/temp.xml" >/dev/null
+							echo "  <keybind key=\"$leadkey\">" | tee -a "$homedir""remote/temp.xml" >/dev/null
 					fi
 					channel_number="$leadkey""$key"
 					script="$homedir""remote/""$channel_number"".sh"
-					eval "echo \"$(cat $channel_template)\"" | sudo tee "$script" >/dev/null
-					eval "echo \"$(cat keybind-template.xml)\"" | sudo tee -a "$homedir""remote/temp.xml" >/dev/null
+					eval "echo \"$(cat $channel_template)\"" | tee "$script" >/dev/null
+					eval "echo \"$(cat keybind-template.xml)\"" | tee -a "$homedir""remote/temp.xml" >/dev/null
 					channel_position=$(($channel_position+1))
 					echo "CHANNEL $channel_number of $number_of_channels keybind set."
 				done
-			eval "echo \"  </keybind>\"" | sudo tee -a "$homedir""remote/temp.xml" >/dev/null
+			eval "echo \"  </keybind>\"" | tee -a "$homedir""remote/temp.xml" >/dev/null
 			echo "CHANNEL bindings complete. Starting KEY bindings..."
 	fi
 	sleep 1
@@ -284,8 +285,8 @@ then
 				key=$(xev -event keyboard | awk -W interactive -F'[ )]+' '/^KeyRelease/ { a[NR+2] } NR in a { printf "%s\n", $8;exit;}')
 				echo "BINDING $script_action to the $key BUTTON"
 				script="$homedir""remote/""$script_action"".sh"
-				eval "echo \"$(cat $sh_template)\"" | sudo tee "$script" >/dev/null
-				eval "echo \"$(cat keybind-template.xml)\"" | sudo tee -a "$homedir""remote/temp.xml" >/dev/null
+				eval "echo \"$(cat $sh_template)\"" | tee "$script" >/dev/null
+				eval "echo \"$(cat keybind-template.xml)\"" | tee -a "$homedir""remote/temp.xml" >/dev/null
 				break
 			done
 			echo "BIND another KEY?"
@@ -296,8 +297,8 @@ then
 					read -p 'Y/N: ' bind_remote
 				done
 		done
-	echo "<!-- End of Remote Control Binds set $today -->" | sudo tee -a temp.xml >/dev/null
-	eval "echo \"$(cat remote_token_template.sh)\"" | sudo tee remote_token.sh >/dev/null
+	echo "<!-- End of Remote Control Binds set $today -->" | tee -a temp.xml >/dev/null
+	eval "echo \"$(cat remote_token_template.sh)\"" | tee remote_token.sh >/dev/null
 	sleep 1
 	clear
 	echo "++++++++++++++++++++REMOTE CONTROL KEYBIND SETUP++++++++++++++++++++"
@@ -308,14 +309,14 @@ then
 			echo "APPENDING $homedir.config/openbox/$openbox_xml with new KEYBINDS."
 			break
 		done
-	sudo cp "$homedir".config/openbox/"$openbox_xml" "$homedir"backup-"$openbox_xml"
-	sudo sed -i $'/<\/keyboard>/{e cat temp.xml\n}' "$homedir".config/openbox/"$openbox_xml"
+	cp "$homedir".config/openbox/"$openbox_xml" "$homedir"backup-"$openbox_xml"
+	sed -i $'/<\/keyboard>/{e cat temp.xml\n}' "$homedir".config/openbox/"$openbox_xml"
 fi
 sleep 1
 clear
 echo "++++++++++++++++++++REMOTE CONTROL KEYBIND SETUP++++++++++++++++++++"
 echo "COMPLETING KEYBIND SETUP AND PREPARING TO EXIT..."
-sudo chmod 777 "$homedir"remote/*
+find . -type f -name "*.sh" -exec chmod +x {} \;
 sudo service lightdm restart
 sleep 1
 exit 0
